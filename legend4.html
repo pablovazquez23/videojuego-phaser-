@@ -1,0 +1,152 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+    <meta charset="UTF-8" />
+    <title>LEGEND.html</title>
+    <script src="//cdn.jsdelivr.net/npm/phaser@3.11.0/dist/phaser.js"></script>
+    <style type="text/css">
+        body {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<script type="text/javascript">
+
+    var config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+       physics: {
+        default: 'arcade',
+        arcade: {
+            gravity: { y: 350 },
+            debug: false
+        }
+    },
+        scene: {
+            preload: preload,
+            create: create,
+            update: update
+        }
+    };
+    var player;
+
+var platforms;
+var cursors;
+    var game = new Phaser.Game(config);
+    
+
+
+    function preload ()
+    {
+		        
+        this.load.image('CloudsBack', 'assets/CloudsBack2.png' );
+        this.load.image('CloudsFront', 'assets/CloudsFront2.png');
+        this.load.image('BGBack', 'assets/BGBack2.png');
+        this.load.image('BGFront', 'assets/BGFront2.png');
+      
+        this.load.image('plataforma', 'assets/bridge3.png');
+        this.load.image('coin', 'assets/coin_22x22.png');
+        this.load.image('bomb', 'assets/bomb.png');
+                 
+        this.load.spritesheet('Knight', 'assets/link.png', { frameWidth: 60, frameHeight: 65 });
+         this.load.spritesheet('Knightl', 'assets/link7.png', { frameWidth: 60, frameHeight: 65 });
+          this.load.spritesheet('Knightr', 'assets/link8.png', { frameWidth: 60, frameHeight: 65 });
+         
+        
+        
+        
+        
+        
+    }
+ 
+    function create ( )
+    {
+	
+		 this.add.image(400, 300, 'CloudsBack');
+		 this.add.image(400, 300, 'CloudsFront');
+		 this.add.image(400, 300, 'BGBack');
+		 this.add.image(400, 300, 'BGFront');
+		
+    
+         
+   
+   
+		  platforms = this.physics.add.staticGroup();
+
+ platforms.create(100, 350, 'plataforma').setScale(1).refreshBody();
+ platforms.create(100, 550, 'plataforma');
+ platforms.create(100, 150, 'plataforma');
+      platforms.create(275, 450, 'plataforma');
+      platforms.create(275, 250, 'plataforma');
+         platforms.create(475, 350, 'plataforma');      
+         platforms.create(400, 550, 'plataforma'); 
+         platforms.create(475,150, 'plataforma');  
+   platforms.create(700, 450, 'plataforma');
+   platforms.create(700, 250, 'plataforma');
+   platforms.create(250, 550, 'plataforma');
+  platforms.create(550, 550, 'plataforma');
+  platforms.create(700, 550, 'plataforma');
+
+  
+  
+     player = this.physics.add.sprite(100, 450, 'Knight');
+
+        player.setBounce(0.2);
+        player.setCollideWorldBounds(true);
+
+        this.anims.create({
+            key: 'left',
+            frames: this.anims.generateFrameNumbers('Knightl',   { start:0 , end: 3} ),
+            frameRate: 10,
+          repeat: -1
+        });
+
+        this.anims.create({
+            key: 'turn',
+            frames: [ { key: 'Knight', frame: 0 } ],
+            frameRate: 20
+        });
+
+        this.anims.create({
+            key: 'right',
+            frames: this.anims.generateFrameNumbers('Knightr', { start: 0, end: 3} ), 
+            frameRate: 10,
+            repeat: -1
+                   
+        });
+        cursors = this.input.keyboard.createCursorKeys();
+         this.physics.add.collider(player, platforms);
+     }
+    function update ()
+    {
+		if (cursors.left.isDown)
+        {
+            player.setVelocityX(-160);
+
+            player.anims.play('left', true);
+        }
+        else if (cursors.right.isDown)
+        {
+            player.setVelocityX(160);
+
+            player.anims.play('right', true);
+        }
+        else
+        {
+            player.setVelocityX(0);
+
+            player.anims.play('turn');
+         }
+
+        if (cursors.up.isDown && player.body.touching.down)
+        {
+            player.setVelocityY(-330);
+        }
+    }
+
+</script>
+
+</body>
+</html>
